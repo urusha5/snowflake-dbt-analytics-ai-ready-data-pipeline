@@ -1,5 +1,5 @@
 # Build a single immutable image; promote the tested image digest between environments.
-FROM node:24-bookworm-slim AS node-runtime
+FROM node:25-bookworm-slim AS node-runtime
 FROM python:3.12-slim-bookworm AS runtime
 RUN apt-get update \
     && apt-get install -y --no-install-recommends libstdc++6 libgcc-s1 libatomic1 ca-certificates \
