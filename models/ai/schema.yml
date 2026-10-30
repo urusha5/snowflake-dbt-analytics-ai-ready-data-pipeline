@@ -1,0 +1,89 @@
+version: 2
+models:
+  - name: customer_features
+    description: Customer features at an explicit as-of boundary, excluding future customers and purchases. Pseudonymous, not anonymous.
+    config:
+      meta:
+        grain: one customer per feature_as_of_date
+        classification: pseudonymous
+    columns:
+      - name: customer_key
+        data_type: varchar
+        data_tests: [not_null, unique]
+      - name: feature_as_of_date
+        data_type: date
+        data_tests: [not_null]
+      - name: order_count
+        data_type: number(38, 0)
+        data_tests: [not_null]
+      - name: lifetime_value
+        data_type: number(18, 2)
+        data_tests: [not_null]
+      - name: average_order_value
+        data_type: number(18, 2)
+      - name: recency_days
+        data_type: number(38, 0)
+      - name: orders_30d
+        data_type: number(38, 0)
+        data_tests: [not_null]
+      - name: revenue_30d
+        data_type: number(18, 2)
+      - name: orders_90d
+        data_type: number(38, 0)
+        data_tests: [not_null]
+      - name: revenue_90d
+        data_type: number(18, 2)
+      - name: unique_products
+        data_type: number(38, 0)
+      - name: last_purchase_date
+        data_type: date
+  - name: product_knowledge
+    description: Product documents with stable keys and provenance. Embedding and retrieval evaluation are separate workloads.
+    columns:
+      - name: document_id
+        data_type: varchar
+        data_tests: [not_null, unique]
+      - name: product_id
+        data_type: number(38, 0)
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('product')
+                field: product_id
+      - name: product_name
+        data_type: varchar
+      - name: category
+        data_type: varchar
+      - name: content
+        data_type: varchar
+        data_tests: [not_null]
+      - name: source_reference
+        data_type: varchar
+        data_tests: [not_null]
+      - name: updated_as_of
+        data_type: date
+  - name: daily_demand_features
+    description: Demand after actual product availability. units_sold is the target; lagged inputs exclude the target day.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [product_id, demand_date]
+    columns:
+      - name: product_id
+        data_type: number(38, 0)
+        data_tests: [not_null]
+      - name: demand_date
+        data_type: date
+        data_tests: [not_null]
+      - name: units_sold
+        data_type: number(38, 0)
+        data_tests: [not_null]
+      - name: revenue
+        data_type: number(18, 2)
+      - name: units_lag_1d
+        data_type: number(38, 0)
+      - name: units_lag_7d
+        data_type: number(38, 0)
+      - name: avg_units_previous_7d
+        data_type: number(18, 2)

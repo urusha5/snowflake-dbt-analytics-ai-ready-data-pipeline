@@ -1,0 +1,90 @@
+name: snowstack
+x-common: &common
+  image: ${SNOWSTACK_IMAGE:?Set an immutable image reference such as registry/image@sha256:...}
+  restart: unless-stopped
+  read_only: true
+  init: true
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  tmpfs:
+    - /tmp:mode=1777,size=128m
+  volumes:
+    - state:/var/lib/snowstack
+  mem_limit: 1g
+  cpus: 1.0
+  pids_limit: 128
+  logging:
+    driver: json-file
+    options:
+      max-size: 10m
+      max-file: "5"
+services:
+  web:
+    <<: *common
+    env_file: ./web.env
+    environment:
+      NODE_ENV: production
+      APP_MODE: snowflake
+      HOST: 0.0.0.0
+      STATE_DIR: /var/lib/snowstack
+      SNOWFLAKE_PRIVATE_KEY_PATH: /run/secrets/reader_key
+      SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_FILE: /run/secrets/reader_key_passphrase
+      OIDC_CLIENT_SECRET_FILE: /run/secrets/oidc_client_secret
+    secrets: [reader_key, reader_key_passphrase, oidc_client_secret]
+    expose: ["3000"]
+  worker:
+    <<: *common
+    command: [node, server/worker.mjs]
+    volumes:
+      - state:/var/lib/snowstack
+      - artifacts:/var/lib/snowstack-artifacts
+    env_file: ./worker.env
+    environment:
+      NODE_ENV: production
+      APP_MODE: snowflake
+      STATE_DIR: /var/lib/snowstack
+      ARTIFACT_DIR: /var/lib/snowstack-artifacts
+      SNOWFLAKE_PRIVATE_KEY_PATH: /run/secrets/worker_key
+      SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_FILE: /run/secrets/worker_key_passphrase
+      CUSTOMER_KEY_SALT_FILE: /run/secrets/customer_key_salt
+    secrets: [worker_key, worker_key_passphrase, customer_key_salt]
+    healthcheck:
+      test: [CMD, node, scripts/worker-health.mjs]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+    stop_grace_period: 40s
+  proxy:
+    image: ${CADDY_IMAGE:?Set a verified Caddy image digest}
+    restart: unless-stopped
+    env_file: ./proxy.env
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [web]
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "5"
+volumes:
+  state:
+  artifacts:
+  caddy_data:
+  caddy_config:
+secrets:
+  reader_key:
+    file: ./secrets/reader.p8
+  reader_key_passphrase:
+    file: ./secrets/reader-passphrase
+  worker_key:
+    file: ./secrets/worker.p8
+  worker_key_passphrase:
+    file: ./secrets/worker-passphrase
+  oidc_client_secret:
+    file: ./secrets/oidc-client-secret
+  customer_key_salt:
+    file: ./secrets/customer-key-salt

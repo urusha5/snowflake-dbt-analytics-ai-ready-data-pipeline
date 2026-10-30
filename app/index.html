@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c0d10" />
+    <meta
+      name="description"
+      content="Explore, validate, and prepare retail data for analytics and AI in the Snowflake + dbt data workspace."
+    />
+    <title>
+      Overview · Snowflake + dbt Analytics and AI-Ready Data Pipeline
+    </title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/app.js" type="module"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <a
+          href="#overview"
+          class="brand"
+          aria-label="Snowflake and dbt workspace home"
+          ><span class="brand-mark">✳</span
+          ><span
+            >snowstack<span class="brand-caption"
+              >INTELLIGENCE IN MOTION</span
+            ></span
+          ></a
+        >
+        <div class="workspace-switch">
+          <span class="workspace-avatar">S</span
+          ><span
+            >Snowflake + dbt<span class="muted-small"
+              >Analytics & AI pipeline</span
+            ></span
+          ><span class="switch-icon">⌘</span>
+        </div>
+        <div class="nav-caption">WORKSPACE</div>
+        <nav aria-label="Main navigation" id="navigation"></nav>
+        <div class="sidebar-bottom">
+          <div class="local-status">
+            <i class="status-dot"></i
+            ><span
+              >Local environment<span>SQLite · Sample retail data</span></span
+            >
+          </div>
+          <a href="#settings" class="profile"
+            ><span class="avatar">DE</span
+            ><span>Data engineering<span>Personal workspace</span></span
+            ><span class="profile-arrow">↗</span></a
+          >
+        </div>
+      </aside>
+      <div class="main-shell">
+        <header class="topbar">
+          <div class="breadcrumbs">
+            <button
+              class="icon-button mobile-menu"
+              id="menu-toggle"
+              aria-label="Toggle navigation"
+              aria-controls="sidebar"
+              aria-expanded="false"
+            >
+              ☰</button
+            ><span class="crumb-icon" id="crumb-icon"></span
+            ><span>Workspace</span><span class="slash">/</span
+            ><strong id="breadcrumb">Overview</strong>
+          </div>
+          <div class="top-actions">
+            <button
+              class="search-trigger"
+              id="global-search"
+              aria-label="Search models and data"
+            >
+              <span id="search-icon"></span><span>Search models, data...</span
+              ><kbd>Ctrl K</kbd></button
+            ><span class="demo-label"><i></i>Demo data</span
+            ><button
+              class="icon-button"
+              id="help-button"
+              aria-label="About this workspace"
+            >
+              ?</button
+            ><span class="avatar top-avatar">DE</span>
+          </div>
+        </header>
+        <main id="main" tabindex="-1">
+          <div class="loading-state">
+            <span class="loader"></span>Preparing your data workspace…
+          </div>
+        </main>
+        <footer>
+          <span>Snowflake + dbt Analytics and AI-Ready Data Pipeline</span
+          ><span
+            >Built for clarity. Ready for what’s next.<span class="footer-dot"
+              >✳</span
+            ></span
+          >
+        </footer>
+      </div>
+    </div>
+    <div class="modal-backdrop" id="modal" hidden>
+      <section
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+      >
+        <div class="modal-header">
+          <h2 id="modal-title"></h2>
+          <button
+            class="icon-button"
+            id="close-modal"
+            aria-label="Close dialog"
+          >
+            ✕
+          </button>
+        </div>
+        <div id="modal-body"></div>
+      </section>
+    </div>
+    <div
+      class="toast-region"
+      id="toasts"
+      role="status"
+      aria-live="polite"
+    ></div>
+  </body>
+</html>

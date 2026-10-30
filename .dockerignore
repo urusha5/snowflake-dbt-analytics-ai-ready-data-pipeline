@@ -1,0 +1,16 @@
+.git
+.local
+.env
+.env.*
+node_modules
+.venv
+venv
+target
+logs
+dbt_packages
+assets/screenshots
+*.p8
+*.pem
+*.key
+deploy/*.env
+deploy/secrets/

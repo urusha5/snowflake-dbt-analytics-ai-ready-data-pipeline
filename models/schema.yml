@@ -1,0 +1,127 @@
+version: 2
+
+models:
+
+  # ==========================================================
+  # CUSTOMER
+  # ==========================================================
+  - name: customer
+    description: Clean customer dimension table.
+
+    columns:
+      - name: customer_id
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_type
+      - name: email
+      - name: age
+      - name: gender
+      - name: total_purchases
+      - name: created_at
+        data_tests: [not_null]
+
+  # ==========================================================
+  # PRODUCT
+  # ==========================================================
+  - name: product
+    description: Clean product dimension table.
+
+    columns:
+      - name: product_id
+        data_tests:
+          - not_null
+          - unique
+
+      - name: name
+      - name: category
+      - name: price
+      - name: stock_quantity
+      - name: rating
+      - name: available_from
+        data_tests: [not_null]
+
+  # ==========================================================
+  # ORDERS
+  # ==========================================================
+  - name: orders
+    description: Clean orders fact table.
+
+    columns:
+
+      - name: transaction_id
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('customer')
+                field: customer_id
+
+      - name: product_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('product')
+                field: product_id
+
+      - name: quantity
+        data_tests:
+          - not_null
+          - positive_amount
+
+      - name: total_amount
+        data_tests:
+          - not_null
+          - positive_amount
+
+      - name: transaction_date
+        data_tests:
+          - not_null
+
+      - name: customer_key
+        data_tests: [not_null]
+
+      - name: loaded_at
+        data_tests:
+          - not_null:
+              config:
+                enabled: "{{ var('source_loaded_at_field', none) is not none }}"
+
+  # ==========================================================
+  # GOLD MODELS
+  # ==========================================================
+
+  - name: daily_sales
+    description: Daily sales summary.
+
+  - name: monthly_sales
+    description: Monthly sales summary.
+
+  - name: customer_summary
+    description: Customer summary.
+
+  - name: product_performance
+    description: Product performance.
+
+  - name: category_sales
+    description: Category sales.
+
+  - name: top_customers
+    description: Top customers.
+
+  - name: executive_dashboard
+    description: Executive dashboard.
+
+  - name: customer_segmentation
+    description: Customer segmentation.
+
+  - name: incremental_sales
+    description: Incremental sales model.
+

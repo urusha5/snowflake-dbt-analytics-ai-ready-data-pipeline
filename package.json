@@ -1,0 +1,24 @@
+{
+  "name": "snowflake-dbt-ai-pipeline",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Private Snowflake analytics workspace with company SSO, validated dbt releases, and AI-ready datasets",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server/index.mjs",
+    "dev": "node --watch --env-file-if-exists=.env server/index.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "check": "node scripts/check.mjs",
+    "worker": "node --env-file-if-exists=.env server/worker.mjs",
+    "pipeline:queue": "node --env-file-if-exists=.env scripts/jobs.mjs queue",
+    "warehouse:acceptance": "node scripts/warehouse-smoke.mjs",
+    "deployment:check": "node scripts/deployment-check.mjs"
+  },
+  "dependencies": {
+    "openid-client": "6.8.8",
+    "snowflake-sdk": "3.4.1"
+  }
+}

@@ -1,0 +1,3 @@
+-r requirements.txt
+sqlfluff==4.2.0
+sqlfluff-templater-dbt==4.2.0

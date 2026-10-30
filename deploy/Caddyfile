@@ -1,0 +1,31 @@
+{
+    log default {
+        format filter {
+            wrap json
+            fields {
+                request>uri replace REDACTED
+                request>headers>Cookie delete
+                request>headers>Authorization delete
+                resp_headers>Set-Cookie delete
+            }
+        }
+    }
+}
+{$PUBLIC_HOST} {
+    encode zstd gzip
+    reverse_proxy web:3000 {
+        header_up Host {$PUBLIC_HOST}
+    }
+    log {
+        format filter {
+            wrap json
+            fields {
+                request>uri replace REDACTED
+                request>headers>Cookie delete
+                request>headers>Authorization delete
+                resp_headers>Set-Cookie delete
+            }
+        }
+        output stdout
+    }
+}

@@ -1,0 +1,32 @@
+version: 2
+
+exposures:
+
+  - name: executive_dashboard
+    label: Snowflake + dbt Analytics and AI-Ready Data Pipeline
+    type: dashboard
+
+    maturity: medium
+
+    url: "{{ env_var('PUBLIC_ORIGIN', 'http://127.0.0.1:3000') }}"
+
+    description: |
+      Local data workspace for analytics, lineage, quality, and AI datasets.
+      The app uses SQLite equivalents; these are intended Snowflake dependencies.
+
+    depends_on:
+      - ref('daily_sales')
+      - ref('monthly_sales')
+      - ref('category_sales')
+      - ref('customer_summary')
+      - ref('product_performance')
+      - ref('top_customers')
+      - ref('customer_segmentation')
+      - ref('executive_dashboard')
+      - ref('customer_features')
+      - ref('product_knowledge')
+      - ref('daily_demand_features')
+
+    owner:
+      name: Smriti Jha
+      email: smriti@example.com

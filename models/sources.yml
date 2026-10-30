@@ -1,0 +1,28 @@
+version: 2
+
+sources:
+  - name: bronze
+    description: Bronze layer raw retail tables
+
+    database: "{{ env_var('SNOWFLAKE_DATABASE', 'PACIFIC_RETAIL_DB') }}"
+    schema: "{{ env_var('SNOWFLAKE_SOURCE_SCHEMA', 'BRONZE') }}"
+
+    config:
+      loaded_at_field: "{{ var('source_loaded_at_field', none) }}"
+      freshness: "{{ {'warn_after': {'count': 24, 'period': 'hour'}, 'error_after': {'count': 48, 'period': 'hour'}} if var('source_loaded_at_field', none) else none }}"
+
+    tables:
+      - name: raw_customer
+        description: Raw customer table
+
+      - name: raw_product
+        description: Raw product table
+
+      - name: raw_orders
+        description: Raw orders table
+
+        columns:
+          - name: transaction_id
+            description: Unique transaction identifier.
+          - name: loaded_at
+            description: Loader-supplied ingestion timestamp; enable freshness only when populated.

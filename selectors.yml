@@ -1,0 +1,26 @@
+selectors:
+
+  - name: ai_ready_models
+    description: Build AI data models and their upstream dependencies
+    definition:
+      method: tag
+      value: ai_ready
+      parents: true
+
+  - name: staging_models
+    description: Run all staging models
+    definition:
+      method: tag
+      value: staging
+
+  - name: silver_models
+    description: Run all silver models
+    definition:
+      method: tag
+      value: silver
+
+  - name: gold_models
+    description: Run all gold models
+    definition:
+      method: tag
+      value: gold

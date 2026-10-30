@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+.venv/
+.env
+.env.*
+!.env.example
+
+# dbt
+target/
+logs/
+dbt_packages/
+
+# Snowflake
+profiles.yml
+!config/profiles.yml
+config/.user.yml
+
+# Local workspace runtime
+.local/
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Python cache
+.pytest_cache/
+.mypy_cache/
+
+# SQLFluff
+.sqlfluffcache
+
+# Environment Variables
+.env.example.local
+
+# Deployment secrets and host-specific configuration
+deploy/*.env
+deploy/secrets/
+*.p8
+*.pem
+*.key
+
+# Packaged source releases
+*.zip
