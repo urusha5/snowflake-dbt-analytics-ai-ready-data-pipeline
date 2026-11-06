@@ -18,7 +18,7 @@
     "deployment:check": "node scripts/deployment-check.mjs"
   },
   "dependencies": {
-    "openid-client": "6.8.8",
+    "openid-client": "6.8.9",
     "snowflake-sdk": "3.4.1"
   }
 }
